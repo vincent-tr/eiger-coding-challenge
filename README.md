@@ -1,5 +1,7 @@
 # Eiger coding challenge
 
+[Statement](statement.md)
+
 ## System requirements
 
 gtest, cmake
