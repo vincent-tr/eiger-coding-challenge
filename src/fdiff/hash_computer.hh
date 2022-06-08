@@ -13,7 +13,7 @@ namespace eiger_coding_challenge::fdiff {
   struct chunk_hash;
 
   struct hash_computer final {
-    hash_computer(std::size_t chunk_size);
+    explicit hash_computer(std::size_t chunk_size);
     ~hash_computer();
 
     void append(const std::shared_ptr<buffer> &buf);
