@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <memory>
 
-namespace eiger_coding_challenge {
+namespace eiger_coding_challenge::hash {
 
   struct rolling_hash {
     virtual ~rolling_hash() = default;
@@ -12,6 +12,6 @@ namespace eiger_coding_challenge {
     virtual void append(uint8_t inchar) = 0;
     virtual void update(uint8_t outchar, uint8_t inchar) = 0;
 
-    static std::unique_ptr<rolling_hash> create_adler32(int window);
+    static std::unique_ptr<rolling_hash> create_adler32(std::size_t window);
   };
 }

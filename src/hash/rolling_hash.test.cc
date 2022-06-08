@@ -2,7 +2,7 @@
 
 #include "rolling_hash.hh"
 
-namespace eiger_coding_challenge {
+namespace eiger_coding_challenge::hash {
   namespace {
 
     static constexpr int window = 4;
@@ -19,7 +19,7 @@ namespace eiger_coding_challenge {
       }
     }
 
-    TEST(Hash, Basic) {
+    TEST(RollingHash, Basic) {
       auto hash1 = rolling_hash::create_adler32(window);
       auto hash2 = rolling_hash::create_adler32(window);
 
@@ -29,7 +29,7 @@ namespace eiger_coding_challenge {
       ASSERT_EQ(hash1->output(), hash2->output());
     }
 
-    TEST(Hash, Rolling) {
+    TEST(RollingHash, Rolling) {
       auto hash1 = rolling_hash::create_adler32(window);
       auto hash2 = rolling_hash::create_adler32(window);
 
