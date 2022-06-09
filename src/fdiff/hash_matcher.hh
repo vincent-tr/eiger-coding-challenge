@@ -34,7 +34,7 @@ namespace eiger_coding_challenge::fdiff {
     void append_value(uint8_t value);
 
     std::size_t m_chunk_size;
-    std::size_t m_start_offset = 0;
+    std::size_t m_window_size = 0;
     std::size_t m_current_offset = 0;
     std::unique_ptr<hash::rolling_hash> m_hasher;
     std::unordered_map<uint32_t, chunk_hash> m_chunks;

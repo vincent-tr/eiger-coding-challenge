@@ -14,7 +14,7 @@ namespace eiger_coding_challenge::fdiff {
     static const std::vector<chunk_hash> chunks{
       {33030347, 0, 4},
       {35651803, 4, 4},
-      {3801146, 8, 1},
+      {15204410, 8, 1},
     };
 
     TEST(FDiffMatcher, Basic) {

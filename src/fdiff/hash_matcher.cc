@@ -1,3 +1,4 @@
+#include <iostream>
 #include <cstddef>
 #include <vector>
 #include <memory>
@@ -65,24 +66,30 @@ namespace eiger_coding_challenge::fdiff {
   }
 
   void hash_matcher::append_value(uint8_t inchar) {
-    if (m_current_offset - m_start_offset > m_chunk_size) {
-      m_hasher->update(m_window_back->pop(), inchar);
-    } else {
+    if (m_window_size < m_chunk_size) {
       m_hasher->append(inchar);
-    }
-
-    auto chunk_size = std::min(m_current_offset - m_start_offset, m_chunk_size);
-
-    auto match_it = m_chunks.find(m_hasher->output());
-    if (match_it != m_chunks.end()) {
-      const auto &chunk_hash = match_it->second;
-      m_matchs.emplace_back(chunk_hash.offset(), chunk_hash.size(), m_current_offset - chunk_size);
-
-      m_hasher = hash::rolling_hash::create_adler32(m_chunk_size);
-      m_window_back = std::make_unique<window_back>();
-      m_start_offset = m_current_offset + 1;
+      ++m_window_size;
+    } else {
+      m_hasher->update(m_window_back->pop(), inchar);
     }
 
     ++m_current_offset;
+
+    if (m_window_size < m_chunk_size) {
+      // cannot match on incomplete window
+      return;
+    }
+
+    auto match_it = m_chunks.find(m_hasher->output());
+    if (match_it == m_chunks.end()) {
+      return;
+    }
+
+    const auto &chunk_hash = match_it->second;
+    m_matchs.emplace_back(chunk_hash.offset(), chunk_hash.size(), m_current_offset - m_chunk_size);
+
+    m_hasher = hash::rolling_hash::create_adler32(m_chunk_size);
+    m_window_back = std::make_unique<window_back>();
+    m_window_size = 0;
   }
 }
