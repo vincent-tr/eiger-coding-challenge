@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ostream>
 #include <cstddef>
 
 namespace eiger_coding_challenge::fdiff {
@@ -24,6 +25,10 @@ namespace eiger_coding_challenge::fdiff {
     }
 
     friend auto operator<=>(const chunk_hash&, const chunk_hash&) = default;
+
+    friend std::ostream& operator<< (std::ostream& os, const chunk_hash& val) {
+      return os << "{ hash=" << val.hash() << "; offset=" << val.offset() << "; size=" << val.size() << " }";
+    }
 
   private:
     uint32_t m_hash;
