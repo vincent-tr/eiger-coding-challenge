@@ -4,9 +4,6 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
-#include "hash/rolling_hash.hh"
-#include "buffer.hh"
-#include "chunk_hash.hh"
 
 namespace eiger_coding_challenge::hash {
   struct rolling_hash;
