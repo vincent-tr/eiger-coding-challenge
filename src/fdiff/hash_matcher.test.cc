@@ -130,5 +130,19 @@ namespace eiger_coding_challenge::fdiff {
         {4, 4, 4},
       }));
     }
+
+    TEST(FDiffMatcher, DuplicateReuse) {
+      hash_matcher matcher(4, chunks);
+
+      matcher.append(buffer::from_string_view("12341234"));
+      matcher.end();
+
+      auto output = matcher.output();
+
+      ASSERT_EQ(output, (std::vector<chunk_match>{
+        {0, 4, 0},
+        {0, 4, 4},
+      }));
+    }
   }
 }
