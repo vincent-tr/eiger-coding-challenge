@@ -1,4 +1,3 @@
-#include <iostream>
 #include <cstddef>
 #include <vector>
 #include <memory>
@@ -26,6 +25,22 @@ namespace eiger_coding_challenge::fdiff {
       }
 
       return value;
+    }
+
+    void advance(std::size_t size) {
+      // Note: last advance call will move after end, because of padding
+      while (size > 0 && !m_buffers.empty()) {
+        const auto &buffer = m_buffers.front();
+        auto skip_size = std::min(size, buffer->size() - m_buffer_offset);
+
+        size -= skip_size;
+        m_buffer_offset += skip_size;
+
+        if (m_buffer_offset == buffer->size()) {
+          m_buffer_offset = 0;
+          m_buffers.pop();
+        }
+      }
     }
 
     bool empty() {
@@ -89,7 +104,7 @@ namespace eiger_coding_challenge::fdiff {
     m_matchs.emplace_back(chunk_hash.offset(), chunk_hash.size(), m_current_offset - m_chunk_size);
 
     m_hasher = hash::rolling_hash::create_adler32(m_chunk_size);
-    m_window_back = std::make_unique<window_back>();
+    m_window_back->advance(m_chunk_size);
     m_window_size = 0;
   }
 }

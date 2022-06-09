@@ -120,7 +120,7 @@ namespace eiger_coding_challenge::fdiff {
     TEST(FDiffMatcher, RemoveEnd) {
       hash_matcher matcher(4, chunks);
 
-      matcher.append(buffer::from_string_view("1234578"));
+      matcher.append(buffer::from_string_view("12345678"));
       matcher.end();
 
       auto output = matcher.output();
