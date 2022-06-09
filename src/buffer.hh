@@ -50,6 +50,11 @@ namespace eiger_coding_challenge {
       return std::make_shared<buffer>(reinterpret_cast<const uint8_t *>(vec.data()), vec.size() * sizeof(T));
     }
 
+    template<typename T>
+    static std::shared_ptr<buffer> from_value(const T &value) {
+      return std::make_shared<buffer>(reinterpret_cast<const uint8_t *>(&value), sizeof(T));
+    }
+
   private:
     const uint8_t *m_data;
     std::size_t m_size;
@@ -93,6 +98,11 @@ namespace eiger_coding_challenge {
     template<typename T>
     static std::shared_ptr<mutable_buffer> from_vector(std::vector<T> &vec) {
       return std::make_shared<mutable_buffer>(reinterpret_cast<uint8_t *>(vec.data()), vec.size() * sizeof(T));
+    }
+
+    template<typename T>
+    static std::shared_ptr<mutable_buffer> from_value(T &value) {
+      return std::make_shared<mutable_buffer>(reinterpret_cast<uint8_t *>(&value), sizeof(T));
     }
 
     static std::shared_ptr<mutable_buffer> allocate(std::size_t size) {

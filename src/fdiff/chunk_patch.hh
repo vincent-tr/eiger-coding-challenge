@@ -31,6 +31,10 @@ namespace eiger_coding_challenge::fdiff {
     std::size_t size() const { 
       return m_size;
     }
+
+    void update_source_offset(std::size_t source_offset) {
+      m_source_offset = source_offset;
+    }
     
     friend auto operator<=>(const chunk_patch&, const chunk_patch&) = default;
 

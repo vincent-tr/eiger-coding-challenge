@@ -14,6 +14,7 @@ namespace eiger_coding_challenge::fs {
     explicit output_file(const std::string &filename);
 
     void append(const buffer *buf);
+    void write(std::size_t offset, const buffer *buf);
 
   private:
     std::ofstream stream;
