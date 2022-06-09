@@ -5,12 +5,15 @@
 #include <memory>
 #include <unordered_map>
 
+namespace eiger_coding_challenge {
+  struct buffer;
+}
+
 namespace eiger_coding_challenge::hash {
   struct rolling_hash;
 }
 
 namespace eiger_coding_challenge::fdiff {
-  struct buffer;
   struct chunk_hash;
   struct chunk_match;
 

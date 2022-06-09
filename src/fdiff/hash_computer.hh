@@ -4,12 +4,15 @@
 #include <vector>
 #include <memory>
 
+namespace eiger_coding_challenge {
+  struct buffer;
+}
+
 namespace eiger_coding_challenge::hash {
   struct rolling_hash;
 }
 
 namespace eiger_coding_challenge::fdiff {
-  struct buffer;
   struct chunk_hash;
 
   struct hash_computer final {
