@@ -27,6 +27,10 @@ namespace eiger_coding_challenge::fdiff {
       return value;
     }
 
+    bool empty() {
+      return m_buffers.empty();
+    }
+
   private:
     std::queue<std::shared_ptr<buffer>> m_buffers;
     std::size_t m_buffer_offset = 0;
@@ -49,24 +53,36 @@ namespace eiger_coding_challenge::fdiff {
 
     for (std::size_t offset = 0; offset < buf->size(); ++offset) {
       auto inchar = buf->at(offset);
-      if (m_current_offset - m_start_offset > m_chunk_size) {
-        m_hasher->update(m_window_back->pop(), inchar);
-      } else {
-        m_hasher->append(inchar);
-      }
-
-      auto chunk_size = std::min(m_current_offset - m_start_offset, m_chunk_size);
-
-      auto match_it = m_chunks.find(m_hasher->output());
-      if (match_it != m_chunks.end()) {
-        m_matchs.emplace_back(match_it->second, m_current_offset - chunk_size);
-
-        m_hasher = hash::rolling_hash::create_adler32(m_chunk_size);
-        m_window_back = std::make_unique<window_back>();
-        m_start_offset = m_current_offset + 1;
-      }
-
-      ++m_current_offset;
+      append_value(inchar);
     }
+  }
+
+  void hash_matcher::end() {
+    // pad with 0 until the window has no data
+    while (!m_window_back->empty()) {
+      append_value(0);
+    }
+  }
+
+  void hash_matcher::append_value(uint8_t inchar) {
+    if (m_current_offset - m_start_offset > m_chunk_size) {
+      m_hasher->update(m_window_back->pop(), inchar);
+    } else {
+      m_hasher->append(inchar);
+    }
+
+    auto chunk_size = std::min(m_current_offset - m_start_offset, m_chunk_size);
+
+    auto match_it = m_chunks.find(m_hasher->output());
+    if (match_it != m_chunks.end()) {
+      const auto &chunk_hash = match_it->second;
+      m_matchs.emplace_back(chunk_hash.offset(), chunk_hash.size(), m_current_offset - chunk_size);
+
+      m_hasher = hash::rolling_hash::create_adler32(m_chunk_size);
+      m_window_back = std::make_unique<window_back>();
+      m_start_offset = m_current_offset + 1;
+    }
+
+    ++m_current_offset;
   }
 }

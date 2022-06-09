@@ -22,6 +22,7 @@ namespace eiger_coding_challenge::fdiff {
     ~hash_matcher();
 
     void append(const std::shared_ptr<buffer> &buf);
+    void end();
 
     const std::vector<chunk_match> &output() const {
       return m_matchs;
@@ -29,6 +30,8 @@ namespace eiger_coding_challenge::fdiff {
 
   private:
     struct window_back;
+
+    void append_value(uint8_t value);
 
     std::size_t m_chunk_size;
     std::size_t m_start_offset = 0;
