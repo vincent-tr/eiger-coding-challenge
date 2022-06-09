@@ -13,12 +13,14 @@ namespace eiger_coding_challenge::fs {
     return stream.tellg();
   }
 
+  void input_file::read(std::size_t offset, mutable_buffer *buf) {
+    stream.seekg(offset);
+    stream.read(reinterpret_cast<char *>(buf->mutable_data()), buf->size());
+  }
+
   std::shared_ptr<buffer> input_file::read(std::size_t offset, std::size_t size) {
     auto buf = mutable_buffer::allocate(size);
-
-    stream.seekg(offset);
-    stream.read(reinterpret_cast<char *>(buf->mutable_data()), size);
-
+    read(offset, buf.get());
     return buf;
   }
 }

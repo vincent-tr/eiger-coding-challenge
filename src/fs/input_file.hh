@@ -5,6 +5,7 @@
 
 namespace eiger_coding_challenge {
   struct buffer;
+  struct mutable_buffer;
 }
 
 namespace eiger_coding_challenge::fs {
@@ -14,6 +15,7 @@ namespace eiger_coding_challenge::fs {
     explicit input_file(const std::string &filename);
 
     std::size_t size();
+    void read(std::size_t offset, mutable_buffer *buf);
     std::shared_ptr<buffer> read(std::size_t offset, std::size_t size);
 
   private:
