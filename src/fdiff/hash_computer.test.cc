@@ -21,7 +21,7 @@ namespace eiger_coding_challenge::fdiff {
       ASSERT_EQ(output, (std::vector<chunk_hash>{
         {33030347, 0, 4},
         {35651803, 4, 4},
-        {3801146, 8, 1},
+        {15204410, 8, 1},
       }));
     }
   }

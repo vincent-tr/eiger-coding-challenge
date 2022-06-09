@@ -31,9 +31,16 @@ namespace eiger_coding_challenge::fdiff {
   }
 
   void hash_computer::end() {
-    if (m_current_chunk_size > 0) {
-      m_output.emplace_back(m_hasher->output(), m_block_start_offset, m_current_chunk_size);
+    if (m_current_chunk_size == 0) {
+      return;
     }
+
+    // pad with 0 to get a full window (else it cannot be matched)
+    for (std::size_t i=0; i < m_chunk_size - m_current_chunk_size; ++i) {
+      m_hasher->append(0);
+    }
+
+    m_output.emplace_back(m_hasher->output(), m_block_start_offset, m_current_chunk_size);
   }
 
 }
