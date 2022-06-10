@@ -4,12 +4,19 @@
 
 ## System requirements
 
-gtest, cmake
+gtest, cmake, c++20 compiler
 
-### OSX - brew
+### OSX - homebrew
 
+- Xcode
 ```bash
 brew install googletest cmake
+```
+
+### Archlinux - pacman
+
+```bash
+pacman -S gcc cmake gtest
 ```
 
 ## Building
