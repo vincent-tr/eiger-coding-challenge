@@ -87,9 +87,30 @@ namespace eiger_coding_challenge {
   }
 
   void engine::patch(const std::string basis_filename, const std::string delta_filename, const std::string new_filename) const {
-    // TODO
+    
+    fs::input_file basis_file(basis_filename);
+    fs::input_file delta_file(delta_filename);
+    fs::output_file new_file(new_filename);
+
+    // read patch data
+    std::size_t count;
+    auto count_buffer = mutable_buffer::from_value(count);
+    delta_file.read(0, count_buffer.get());
+
+    std::vector<fdiff::chunk_patch> patch_data(count, {fdiff::patch_type::reuse, 0, 0});
+    auto patch_data_buffer = mutable_buffer::from_vector(patch_data);
+    delta_file.read(count_buffer->size(), patch_data_buffer.get());
+    
+    // execute patch
+    for (const auto &item : patch_data) {
+      auto &source_file = item.type() == fdiff::patch_type::reuse ? basis_file : delta_file;
+      copy(source_file, new_file, item.source_offset(), std::numeric_limits<std::size_t>::max(), item.size());
+    }
   }
 
+  /**
+   * @param target_offset set to max to append at the end
+   */
   void engine::copy(fs::input_file &source, fs::output_file &target, std::size_t source_offset, std::size_t target_offset, std::size_t size) const {
     const std::size_t source_end = source_offset + size;
 
@@ -98,8 +119,12 @@ namespace eiger_coding_challenge {
       auto buf = source.read(source_offset, read_size);
       source_offset += read_size;
 
-      target.write(target_offset, buf.get());
-      target_offset += read_size;
+      if (target_offset == std::numeric_limits<std::size_t>::max()) {
+        target.append(buf.get());
+      } else {
+        target.write(target_offset, buf.get());
+        target_offset += read_size;
+      }
     }
   }
 
