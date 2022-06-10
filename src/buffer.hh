@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <string_view>
 #include <stdexcept>
+#include <memory>
+#include <vector>
 
 namespace eiger_coding_challenge {
 

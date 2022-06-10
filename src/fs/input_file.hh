@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <fstream>
+#include <memory>
 
 namespace eiger_coding_challenge {
   struct buffer;
