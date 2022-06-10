@@ -47,3 +47,19 @@ Contains files IO operations, based on `std::ifstream`/`std::ofstream` (Note: co
 ### `engine`
 
 High level API to glue components together
+
+### `main`
+
+Minimal cli
+
+You can use it, eg:
+```bash
+build/eiger-coding-challenge signature test-files/base.log /tmp/sign
+build/eiger-coding-challenge delta /tmp/sign test-files/append.log /tmp/delta
+build/eiger-coding-challenge patch test-files/base.log /tmp/delta /tmp/new
+
+cmp test-files/append.log /tmp/new
+# check cmp output
+
+rm /tmp/sign /tmp/delta /tmp/new
+```
