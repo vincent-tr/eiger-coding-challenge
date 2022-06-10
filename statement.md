@@ -1,3 +1,5 @@
+[_Source_](https://github.com/eqlabs/recruitment-exercises/blob/master/rolling-hash.md)
+
 # Rolling Hash Algorithm
 _Spec v4 (2021-03-09)_
 
